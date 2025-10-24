@@ -4,9 +4,10 @@ import { setApiBaseUrl } from '../slices/configSlice';
 import { setAllLocations } from '../slices/locationsSlice';
 import { setAllProducts } from '../slices/productsSlice';
 import { setAllInventory } from '../slices/inventorySlice';
-import { setAllTransfers } from '../slices/transfersSlice';
-import { setAllPurchaseOrders } from '../slices/purchaseOrdersSlice';
-import { createClientFromState } from '../api/client';
+// import { setAllTransfers } from '../slices/transfersSlice';
+// import { setAllPurchaseOrders } from '../slices/purchaseOrdersSlice';
+import { ApiClient, createClientFromState } from '../api/client';
+import { adaptAlmacenToLocation, adaptProductoToProduct, buildInventoryFromEntregas } from '../api/adapters';
 import { Box, Typography, TextField, Button, Stack } from '@mui/material';
 
 export default function Settings() {
@@ -18,18 +19,20 @@ export default function Settings() {
     const client = createClientFromState(state);
     if (!client) return;
     try {
-      const [locations, products, inventory, transfers, pos] = await Promise.all([
-        client.getLocations(),
-        client.getProducts(),
-        client.getInventory(),
-        client.getTransfers(),
-        client.getPurchaseOrders(),
+      // Use VPS endpoints: productos, almacenes, entregas
+      const baseClient = new ApiClient({ baseUrl: apiBaseUrl });
+      const [rawProductos, rawAlmacenes, rawEntregas] = await Promise.all([
+        baseClient.listProductos(),
+        baseClient.listAlmacenes(),
+        baseClient.listEntregas(),
       ]);
-      dispatch(setAllLocations(locations));
+      const products = (rawProductos as any[]).map(adaptProductoToProduct);
+      const locations = (rawAlmacenes as any[]).map(adaptAlmacenToLocation);
+      const inventory = buildInventoryFromEntregas(rawEntregas as any[]);
+
       dispatch(setAllProducts(products));
+      dispatch(setAllLocations(locations));
       dispatch(setAllInventory(inventory));
-      dispatch(setAllTransfers(transfers));
-      dispatch(setAllPurchaseOrders(pos));
     } catch (err) {
       console.error(err);
       alert((err as Error).message);
