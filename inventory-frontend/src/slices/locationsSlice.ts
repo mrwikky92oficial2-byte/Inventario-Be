@@ -11,6 +11,14 @@ const locationsSlice = createSlice({
   name: 'locations',
   initialState,
   reducers: {
+    setAllLocations(state, action: PayloadAction<Location[]>) {
+      state.byId = {};
+      state.allIds = [];
+      for (const loc of action.payload) {
+        state.byId[loc.id] = loc;
+        state.allIds.push(loc.id);
+      }
+    },
     addLocation(state, action: PayloadAction<Location>) {
       const loc = action.payload;
       if (!state.byId[loc.id]) {
@@ -40,5 +48,5 @@ const locationsSlice = createSlice({
   },
 });
 
-export const { addLocation, updateLocation, setLocationActive, removeLocation } = locationsSlice.actions;
+export const { setAllLocations, addLocation, updateLocation, setLocationActive, removeLocation } = locationsSlice.actions;
 export default locationsSlice.reducer;

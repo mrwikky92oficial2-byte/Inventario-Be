@@ -15,6 +15,14 @@ const inventorySlice = createSlice({
   name: 'inventory',
   initialState,
   reducers: {
+    setAllInventory(state, action: PayloadAction<InventoryRecord[]>) {
+      state.byId = {} as InventoryState['byId'];
+      state.allIds = [];
+      for (const r of action.payload) {
+        state.byId[r.id] = r;
+        state.allIds.push(r.id);
+      }
+    },
     setQuantity(
       state,
       action: PayloadAction<{ productId: UUID; locationId: UUID; quantity: number }>
@@ -45,5 +53,5 @@ const inventorySlice = createSlice({
   },
 });
 
-export const { setQuantity, adjustQuantity } = inventorySlice.actions;
+export const { setAllInventory, setQuantity, adjustQuantity } = inventorySlice.actions;
 export default inventorySlice.reducer;

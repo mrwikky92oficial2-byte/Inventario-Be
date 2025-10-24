@@ -11,6 +11,14 @@ const purchaseOrdersSlice = createSlice({
   name: 'purchaseOrders',
   initialState,
   reducers: {
+    setAllPurchaseOrders(state, action: PayloadAction<PurchaseOrder[]>) {
+      state.byId = {};
+      state.allIds = [];
+      for (const po of action.payload) {
+        state.byId[po.id] = po;
+        state.allIds.push(po.id);
+      }
+    },
     createPurchaseOrder(state, action: PayloadAction<PurchaseOrder>) {
       const po = action.payload;
       if (!state.byId[po.id]) {
@@ -44,5 +52,5 @@ const purchaseOrdersSlice = createSlice({
   },
 });
 
-export const { createPurchaseOrder, updatePurchaseOrderStatus, appendPurchaseOrderItem } = purchaseOrdersSlice.actions;
+export const { setAllPurchaseOrders, createPurchaseOrder, updatePurchaseOrderStatus, appendPurchaseOrderItem } = purchaseOrdersSlice.actions;
 export default purchaseOrdersSlice.reducer;

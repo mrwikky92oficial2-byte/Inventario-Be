@@ -96,4 +96,5 @@ export interface RootStateShape {
   inventory: InventoryState;
   transfers: TransfersState;
   purchaseOrders: PurchaseOrdersState;
+  config: { apiBaseUrl: string };
 }

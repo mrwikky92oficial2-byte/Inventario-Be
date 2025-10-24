@@ -18,6 +18,7 @@ export default function Layout({ children }: PropsWithChildren) {
             <Button color="inherit" component={RouterLink} to="/inventory">Inventario</Button>
             <Button color="inherit" component={RouterLink} to="/transfers">Transferencias</Button>
             <Button color="inherit" component={RouterLink} to="/purchase-orders">Órdenes</Button>
+            <Button color="inherit" component={RouterLink} to="/settings">Ajustes</Button>
           </Stack>
         </Toolbar>
       </AppBar>

@@ -6,6 +6,7 @@ import Products from './pages/Products';
 import Inventory from './pages/Inventory';
 import Transfers from './pages/Transfers';
 import PurchaseOrders from './pages/PurchaseOrders';
+import Settings from './pages/Settings';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/transfers" element={<Transfers />} />
         <Route path="/purchase-orders" element={<PurchaseOrders />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

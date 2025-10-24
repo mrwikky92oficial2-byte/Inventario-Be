@@ -11,6 +11,14 @@ const transfersSlice = createSlice({
   name: 'transfers',
   initialState,
   reducers: {
+    setAllTransfers(state, action: PayloadAction<Transfer[]>) {
+      state.byId = {};
+      state.allIds = [];
+      for (const t of action.payload) {
+        state.byId[t.id] = t;
+        state.allIds.push(t.id);
+      }
+    },
     createTransfer(state, action: PayloadAction<Transfer>) {
       const t = action.payload;
       if (!state.byId[t.id]) {
@@ -41,5 +49,5 @@ const transfersSlice = createSlice({
   },
 });
 
-export const { createTransfer, updateTransferStatus, appendTransferItem } = transfersSlice.actions;
+export const { setAllTransfers, createTransfer, updateTransferStatus, appendTransferItem } = transfersSlice.actions;
 export default transfersSlice.reducer;

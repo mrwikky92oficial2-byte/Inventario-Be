@@ -11,6 +11,14 @@ const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
+    setAllProducts(state, action: PayloadAction<Product[]>) {
+      state.byId = {};
+      state.allIds = [];
+      for (const p of action.payload) {
+        state.byId[p.id] = p;
+        state.allIds.push(p.id);
+      }
+    },
     addProduct(state, action: PayloadAction<Product>) {
       const p = action.payload;
       if (!state.byId[p.id]) {
@@ -40,5 +48,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { addProduct, updateProduct, setProductActive, removeProduct } = productsSlice.actions;
+export const { setAllProducts, addProduct, updateProduct, setProductActive, removeProduct } = productsSlice.actions;
 export default productsSlice.reducer;
